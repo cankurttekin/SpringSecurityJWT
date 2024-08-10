@@ -14,6 +14,8 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
+import static org.hibernate.internal.CoreLogging.logger;
+
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     @Autowired private JwtUtil jwtUtil;
@@ -26,6 +28,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             HttpServletResponse response,
             FilterChain filterChain
     ) throws ServletException, IOException {
+
+        if (request.getServletPath().contains("/api/auth/login")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
         String jwt = getJwtFromRequest(request);
 
         if (jwt != null && jwtUtil.validateToken(jwt)) {
