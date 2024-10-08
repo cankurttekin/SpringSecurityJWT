@@ -31,27 +31,21 @@ public class AuthService {
 //            throw new AuthenticationException("Invalid credentials") {};
 //        }
 
-        System.out.println("deneme");
-
         Authentication authentication = authenticationManager.authenticate(
                                 new UsernamePasswordAuthenticationToken(
                                 username,
                                 password
                                 )
         );
-
         SecurityContextHolder.getContext().setAuthentication(authentication);
-
         String jwt = jwtUtil.generateToken((UserDetails) authentication.getPrincipal());
         return jwt;
-
         /*
         if (new BCryptPasswordEncoder().matches(password, userDetails.getPassword())) {
             return jwtUtil.generateToken(userDetails);
         } else {
             throw new AuthenticationException("Invalid credentials") {};
         }
-
          */
     }
 }
